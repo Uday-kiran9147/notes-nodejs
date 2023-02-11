@@ -28,31 +28,38 @@ class _HomePageState extends State<HomePage> {
             itemCount: value.notes.length,
             itemBuilder: (context, index) {
               Note CurrentNote = value.notes[index];
-              return Container(
-                padding: EdgeInsets.all(10),
-                margin: const EdgeInsets.all(5),
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(15),
-                    border: Border.all(color: Colors.grey, width: 2)),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      value.notes[index].title!,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 7,
-                    ),
-                    Text(value.notes[index].content!,
+              return GestureDetector(
+                onTap: () {},
+                onLongPress: () {
+                  //delete
+                  value.deleteNote(CurrentNote);
+                },
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  margin: const EdgeInsets.all(5),
+                  decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(color: Colors.grey, width: 2)),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        value.notes[index].title!,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        maxLines: 5,
                         style: TextStyle(
-                            color: Colors.grey.shade700, fontSize: 18)),
-                  ],
+                            fontWeight: FontWeight.bold, fontSize: 20),
+                      ),
+                      SizedBox(
+                        height: 7,
+                      ),
+                      Text(value.notes[index].content!,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 5,
+                          style: TextStyle(
+                              color: Colors.grey.shade700, fontSize: 18)),
+                    ],
+                  ),
                 ),
               );
             }),
