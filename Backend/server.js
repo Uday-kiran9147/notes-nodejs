@@ -23,7 +23,7 @@ mongoose.connect(mongoDBpath).then(function () {
     // we get access only when we connect to the above server(link)
     //App route, pages(/) (login, sigin, home pages).
     app.get("/", function (req, res) {
-        const response = { message: "API works!" };
+        const response = { statuscode: res.statusCode, message: "API works!" };
         res.json(response);
         res.send("This is the HOME page");
     });
