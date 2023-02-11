@@ -1,11 +1,20 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:notes/models/note.dart';
-import 'package:notes/provider/notes_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
+import 'package:notes/models/note.dart';
+import 'package:notes/provider/notes_provider.dart';
+
 class AddNewNotePage extends StatefulWidget {
-  AddNewNotePage({super.key});
+  const AddNewNotePage({
+    Key? key,
+    required this.isUpdate,
+    this.note,
+  }) : super(key: key);
+
+  final bool isUpdate;
+  final Note? note;
 
   @override
   State<AddNewNotePage> createState() => _AddNewNotePageState();
@@ -30,15 +39,38 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
     Navigator.pop(context);
   }
 
+  void updateNewNote() {
+    widget.note!.title = titleController.text;
+    widget.note!.content = contentController.text;
+    Provider.of<NoteProvider>(context, listen: false).updateNote(widget.note!);
+    Navigator.pop(context);
+  }
+
+  @override
+  void initState() {
+    //previous  Data will automatically be loaded to contentController  when updating the note
+    super.initState();
+    if (widget.isUpdate) {
+      titleController.text = widget.note!.title!;
+      contentController.text = widget.note!.content!;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         actions: [
           IconButton(
-            icon: Icon(Icons.check),
-            onPressed: () => addnewNote(),
-          )
+              icon: Icon(Icons.check),
+              onPressed: () {
+                if (widget.isUpdate) {
+                  //update
+                  updateNewNote();
+                } else {
+                  addnewNote();
+                }
+              })
         ],
       ),
       body: SafeArea(
@@ -56,7 +88,9 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
                   }
                 },
                 style: TextStyle(fontSize: 25),
-                autofocus: true, // keeps curser at title field by default
+                autofocus: (widget.isUpdate)
+                    ? false
+                    : true, // keeps curser at title field by default
                 decoration: InputDecoration(
                     border: InputBorder.none, hintText: "Title"),
               ),
