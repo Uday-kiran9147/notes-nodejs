@@ -20,7 +20,11 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [ChangeNotifierProvider(create: (context) => NoteProvider())],
-      child: const MaterialApp(home: HomePage()),
+      child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+              brightness: Brightness.dark, primaryColor: Colors.grey.shade800),
+          home: HomePage()),
     );
   }
 }
